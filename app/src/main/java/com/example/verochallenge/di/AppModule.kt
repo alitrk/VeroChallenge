@@ -3,15 +3,15 @@ package com.example.verochallenge.di
 import android.content.Context
 import androidx.room.Room
 import com.example.verochallenge.data.api.TaskApi
-import com.example.verochallenge.data.datasource.TaskDataSource
-import com.example.verochallenge.data.repo.TaskRepository
-import com.example.verochallenge.local.TaskDao
 import com.example.verochallenge.local.TaskDatabase
+import com.example.verochallenge.util.DataStoreRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -22,27 +22,21 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFoodsRepository(tds: TaskDataSource): TaskRepository {
-        return TaskRepository(tds)
-    }
+    fun providesOkHttpClient(): OkHttpClient {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
+        return OkHttpClient
+            .Builder()
+            .addInterceptor(interceptor)
+            .build()
+    }
     @Provides
     @Singleton
-    fun provideFoodsDataSource(tdao: TaskDao): TaskDataSource {
-        return TaskDataSource(tdao)
-    }
-
-    @Provides
-    @Singleton
-    fun provideTaskDao(database: TaskDatabase): TaskDao {
-        return database.taskDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(): Retrofit =
+    fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(TaskApi.BASE_URL)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -57,4 +51,9 @@ object AppModule {
         Room.databaseBuilder(context, TaskDatabase::class.java, "weather_database")
             .fallbackToDestructiveMigration()
             .build()
+
+    @Provides
+    @Singleton
+    fun providesTokenManager(@ApplicationContext context: Context): DataStoreRepository =
+        DataStoreRepository(context.applicationContext)
 }

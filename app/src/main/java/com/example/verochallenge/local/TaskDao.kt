@@ -5,15 +5,16 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.verochallenge.data.model.Task
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWeather(task: List<Task>)
+    suspend fun insertTaskItems(task: List<Task>)
 
     @Query("DELETE FROM tasks")
-    suspend fun deleteAll()
+    suspend fun deleteAllTasks()
 
     @Query("SELECT * FROM tasks")
-    suspend fun getAllTaskResponses(): List<Task>
+    fun getAllTaskResponses(): Flow<List<Task>>
 }

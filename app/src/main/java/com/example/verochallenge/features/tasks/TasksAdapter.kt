@@ -14,7 +14,6 @@ import com.example.verochallenge.databinding.TaskItemRowBinding
 
 class TasksAdapter(private val context: Context) :
     ListAdapter<Task, TasksAdapter.ViewHolder>(TaskDiffCallback()) {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = TaskItemRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -41,6 +40,7 @@ class TasksAdapter(private val context: Context) :
 
         }
     }
+
 }
 
 class TaskDiffCallback : DiffUtil.ItemCallback<Task>() {

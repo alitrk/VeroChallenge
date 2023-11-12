@@ -29,7 +29,8 @@ class TasksViewModel @Inject constructor(
     init {
         fetchTaskItems(false)
     }
-    private fun fetchTaskItems(forceRefresh: Boolean = false) {
+
+    private fun fetchTaskItems(forceRefresh: Boolean) {
         viewModelScope.launch {
             taskRepository.getTaskItems(
                 forceRefresh = forceRefresh,
@@ -46,7 +47,6 @@ class TasksViewModel @Inject constructor(
     }
 
 
-
     fun onManualRefresh() {
         if (taskItems.value !is Resource.Loading) {
             viewModelScope.launch {
@@ -55,6 +55,7 @@ class TasksViewModel @Inject constructor(
             }
         }
     }
+
 
     sealed class Event {
         data class ShowErrorMessage(val error: Throwable) : Event()

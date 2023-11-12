@@ -91,6 +91,11 @@ dependencies {
 
     //Qr Scan Library
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    //Work Manager
+    //implementation("androidx.work:work-runtime-ktx:2.8.1")
+    //implementation ("androidx.hilt:hilt-work:1.1.0")
+
 }
 
 kapt {

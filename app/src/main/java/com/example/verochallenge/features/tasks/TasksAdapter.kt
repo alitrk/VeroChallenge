@@ -31,6 +31,7 @@ class TasksAdapter(private val context: Context) :
             binding.apply {
                 taskTitle.text = task.tasks.title
                 taskDescription.text = task.tasks.description
+                taskString.text = task.tasks.task
                 if (task.tasks.colorCode?.isNotEmpty() == true) {
                     binding.taskColor.setBackgroundColor(Color.parseColor(task.tasks.colorCode))
                 } else {

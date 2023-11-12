@@ -39,6 +39,20 @@ class TasksFragment : Fragment() {
     ): View {
         _binding = FragmentTasksBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        /*val periodicWorkRequest = PeriodicWorkRequestBuilder<CustomWorker>(
+            repeatInterval = 60, // repeat every 60 minutes
+            repeatIntervalTimeUnit = TimeUnit.MINUTES
+        )
+            .setInitialDelay(1, timeUnit = TimeUnit.MINUTES)
+            .build()
+
+        WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork(
+            CustomWorker.WORK_NAME,
+            ExistingPeriodicWorkPolicy.KEEP,
+            periodicWorkRequest
+        )*/
+
         tasksAdapter = TasksAdapter(requireContext())
         binding.apply {
             recyclerView.apply {
